@@ -1,0 +1,44 @@
+# virtual environments
+venv/
+env/
+ENV/
+
+# python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# jupyter notebook checkpoints
+.ipynb_checkpoints/
+*.ipynb
+
+# editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# git
+.git/
+.gitignore
+
+# data that does not need to be copied into container
+data/
+
+# environment variables
+.env
+
+# operating system files
+.DS_Store
+Thumbs.db
+
+# docker files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# documentation
+README.md
+screenshots/

@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:14-alpine
+    container_name: churn-postgres
+    environment:
+      POSTGRES_USER: churnuser
+      POSTGRES_PASSWORD: churnpass123
+      POSTGRES_DB: churn_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U churnuser -d churn_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - churn-network
+
+  api:
+    build: .
+    container_name: churn-api
+    environment:
+      DATABASE_URL: postgresql://churnuser:churnpass123@db:5432/churn_db
+      API_HOST: 0.0.0.0
+      API_PORT: 8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./models:/app/models
+      - ./logs:/app/logs
+    networks:
+      - churn-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  churn-network:
+    driver: bridge

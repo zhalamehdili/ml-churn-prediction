@@ -6,17 +6,17 @@ It is based on the Telco Customer Churn dataset and extends a training notebook 
 ## 1. Overview
 
 The goal is to identify customers who are likely to stop using the service (churn) by analyzing demographic, usage, and contract data.
-The project started as a Jupyter model training task and evolved into an end-to-end system including API engineering, database integration, analytics, and Docker deployment.
+The project started as a Jupyter model training task and evolved into an end-to-end system including API engineering, database integration, analytics and Docker deployment.
 
-## 2. What I Did
+## 2. What was implemented
 
 - Explored and cleaned the Telco dataset (EDA)
 - Trained and compared Logistic Regression and Random Forest models
-- Evaluated models using accuracy, precision, recall, and F1
+- Evaluated models using accuracy, precision, recall and F1
 - Saved the trained model and preprocessing pipeline
 - Built a FastAPI application to serve predictions in real time
 - Integrated PostgreSQL for storing predictions and metadata
-- Added endpoints for health checks, statistics, and prediction history
+- Added endpoints for health checks, statistics and prediction history
 - Implemented automated API tests using pytest
 - Containerized the entire application using Docker and docker-compose
 - Created helper scripts for Docker start, stop, rebuild, and logs
@@ -64,7 +64,7 @@ ml-churn-prediction/
 Swagger UI:
 http://localhost:8000/docs
 
-## 7. Docker Usage (Day 4)
+## 7. Docker Usage 
 
 Start all services:
 docker-compose up

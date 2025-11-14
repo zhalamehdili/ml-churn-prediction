@@ -15,7 +15,7 @@ Open API docs:
 
 ## Common Commands
 
-### Starting & Stopping
+### Starting and Stopping
 
 Start in foreground:
 `docker-compose up`

@@ -1,4 +1,5 @@
 version: "3.8"
+# updated configuration for Docker deployment
 
 services:
   db:

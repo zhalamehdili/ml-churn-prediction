@@ -24,7 +24,7 @@ __pycache__/
 .git/
 .gitignore
 
-# data that does not need to be copied into container
+# data that does not need to be copied into the container
 data/
 
 # environment variables

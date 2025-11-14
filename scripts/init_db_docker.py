@@ -4,7 +4,7 @@ import psycopg2
 from psycopg2 import sql
 import os
 
-# make sure the project root (/app) is on the Python path when this script runs
+# makes sure the project root (/app) is on the Python path when this script runs
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if BASE_DIR not in sys.path:
     sys.path.insert(0, BASE_DIR)

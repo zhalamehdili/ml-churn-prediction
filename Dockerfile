@@ -4,7 +4,7 @@ FROM python:3.11-slim
 # working directory inside the container
 WORKDIR /app
 
-# install system tools needed for Python packages and database client
+# install the system tools needed for Python packages and database client
 RUN apt-get update && apt-get install -y \
     gcc \
     postgresql-client \

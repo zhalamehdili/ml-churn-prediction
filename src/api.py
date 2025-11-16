@@ -1,13 +1,14 @@
-from fastapi import FastAPI, HTTPException, Depends
-from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
-from sqlalchemy import text
-from datetime import datetime
 import logging
+from datetime import datetime
 
-from .schemas import CustomerInput, PredictionOutput, HealthResponse
+from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
+from sqlalchemy.orm import Session
+
+from .database import ModelMetrics, PredictionLog, get_db
 from .predictor import ChurnPredictor
-from .database import get_db, PredictionLog, ModelMetrics
+from .schemas import CustomerInput, HealthResponse, PredictionOutput
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -30,6 +31,7 @@ app.add_middleware(
 
 predictor = ChurnPredictor()
 
+
 @app.get("/", tags=["Root"])
 def root():
     return {
@@ -44,6 +46,7 @@ def root():
             "docs": "/docs",
         },
     }
+
 
 @app.get("/health", response_model=HealthResponse, tags=["Health"])
 def health_check(db: Session = Depends(get_db)):
@@ -61,6 +64,7 @@ def health_check(db: Session = Depends(get_db)):
         timestamp=datetime.now(),
     )
 
+
 @app.post("/predict", response_model=PredictionOutput, tags=["Prediction"])
 def predict_churn(customer: CustomerInput, db: Session = Depends(get_db)):
     try:
@@ -68,6 +72,7 @@ def predict_churn(customer: CustomerInput, db: Session = Depends(get_db)):
     except Exception as e:
         logger.exception("Prediction failed")
         raise HTTPException(status_code=500, detail=f"Prediction failed: {e}")
+
 
 @app.get("/stats", tags=["Analytics"])
 def get_statistics(db: Session = Depends(get_db)):
@@ -79,8 +84,8 @@ def get_statistics(db: Session = Depends(get_db)):
     avg_prob = (sum(p[0] for p in probs) / len(probs)) if probs else 0.0
 
     high = db.query(PredictionLog).filter(PredictionLog.risk_level == "High").count()
-    med  = db.query(PredictionLog).filter(PredictionLog.risk_level == "Medium").count()
-    low  = db.query(PredictionLog).filter(PredictionLog.risk_level == "Low").count()
+    med = db.query(PredictionLog).filter(PredictionLog.risk_level == "Medium").count()
+    low = db.query(PredictionLog).filter(PredictionLog.risk_level == "Low").count()
 
     return {
         "total_predictions": total,
@@ -93,14 +98,10 @@ def get_statistics(db: Session = Depends(get_db)):
         "risk_distribution": {"high": high, "medium": med, "low": low},
     }
 
+
 @app.get("/history", tags=["Analytics"])
 def get_history(limit: int = 10, db: Session = Depends(get_db)):
-    rows = (
-        db.query(PredictionLog)
-        .order_by(PredictionLog.created_at.desc())
-        .limit(limit)
-        .all()
-    )
+    rows = db.query(PredictionLog).order_by(PredictionLog.created_at.desc()).limit(limit).all()
 
     return {
         "total_returned": len(rows),
@@ -118,6 +119,7 @@ def get_history(limit: int = 10, db: Session = Depends(get_db)):
             for r in rows
         ],
     }
+
 
 @app.get("/model-info", tags=["Info"])
 def model_info(db: Session = Depends(get_db)):

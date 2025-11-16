@@ -1,6 +1,8 @@
 # src/init_db.py
 from datetime import datetime
-from src.database import create_tables, ModelMetrics, SessionLocal
+
+from src.database import ModelMetrics, SessionLocal, create_tables
+
 
 def init_database():
     print("Creating database tables...")
@@ -12,13 +14,13 @@ def init_database():
         if not existing:
             metrics = ModelMetrics(
                 model_version="1.0",
-                accuracy=0.852,   # replace with YOUR real numbers if different
+                accuracy=0.852,  # replace with YOUR real numbers if different
                 precision=0.830,
                 recall=0.810,
                 f1_score=0.820,
                 trained_at=datetime.utcnow(),
                 dataset_size=7043,
-                notes="Random Forest model trained on Telco dataset"
+                notes="Random Forest model trained on Telco dataset",
             )
             db.add(metrics)
             db.commit()
@@ -27,6 +29,7 @@ def init_database():
             print("ℹ Model metrics already exist")
     finally:
         db.close()
+
 
 if __name__ == "__main__":
     init_database()

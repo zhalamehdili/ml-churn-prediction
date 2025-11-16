@@ -1,5 +1,9 @@
 # Customer Churn Prediction (ML Pipeline + FastAPI + PostgreSQL + Docker)
 
+![Tests](https://github.com/zhalamehdili/ml-churn-prediction/workflows/Run%20Tests/badge.svg)
+![Docker Build](https://github.com/zhalamehdili/ml-churn-prediction/workflows/Build%20and%20Push%20Docker%20Image/badge.svg)
+![Code Quality](https://github.com/zhalamehdili/ml-churn-prediction/workflows/Code%20Quality/badge.svg)
+
 This project predicts customer churn using a complete machine learning pipeline and a backend built with FastAPI.
 It is based on the Telco Customer Churn dataset and extends a training notebook into a fully working backend API with a connected PostgreSQL database and Dockerized deployment.
 
@@ -85,3 +89,16 @@ Access PostgreSQL:
 docker exec -it churn-postgres psql -U churnuser -d churn_db
 
 All predictions persist across restarts using Docker volumes.
+
+## CI/CD Pipeline
+
+This project uses GitHub Actions for automated testing, code quality checks, and Docker image builds.
+
+- On each push and pull request:
+  - Tests run with pytest
+  - Code style is checked with Black, isort, and Flake8
+- On pushes to `main`:
+  - A Docker image is built and pushed to Docker Hub:
+    - `zhalamehdili/ml-churn-prediction`
+
+For more details, see `CI_CD.md`.

@@ -1,8 +1,10 @@
 # tests/test_api.py
 from fastapi.testclient import TestClient
+
 from src.api import app
 
 client = TestClient(app)
+
 
 def test_root():
     r = client.get("/")
@@ -10,12 +12,14 @@ def test_root():
     data = r.json()
     assert data["status"] == "running"
 
+
 def test_health():
     r = client.get("/health")
     assert r.status_code == 200
     data = r.json()
     assert data["status"] == "healthy"
     assert isinstance(data["model_loaded"], bool)
+
 
 def test_predict_ok():
     payload = {
@@ -37,7 +41,7 @@ def test_predict_ok():
         "PaperlessBilling": "Yes",
         "PaymentMethod": "Electronic check",
         "MonthlyCharges": 70.5,
-        "TotalCharges": 1692.0
+        "TotalCharges": 1692.0,
     }
     r = client.post("/predict", json=payload)
     assert r.status_code == 200
@@ -47,6 +51,7 @@ def test_predict_ok():
     assert data["risk_level"] in ["Low", "Medium", "High"]
     assert "customer_id" in data
 
+
 def test_model_info():
     r = client.get("/model-info")
     assert r.status_code == 200
@@ -54,6 +59,7 @@ def test_model_info():
     assert "model_type" in data
     assert "number_of_features" in data
     assert isinstance(data["features"], list)
+
 
 def test_validation_error():
     # tenure must be int; send string to force 422

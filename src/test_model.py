@@ -2,10 +2,10 @@ import joblib
 import numpy as np
 
 # Load artifacts
-model = joblib.load('models/model.pkl')
-scaler = joblib.load('models/scaler.pkl')
-feature_names = joblib.load('models/feature_names.pkl')
-label_encoders = joblib.load('models/label_encoders.pkl')
+model = joblib.load("models/model.pkl")
+scaler = joblib.load("models/scaler.pkl")
+feature_names = joblib.load("models/feature_names.pkl")
+label_encoders = joblib.load("models/label_encoders.pkl")
 
 print("Model and preprocessing artifacts loaded.")
 print(f"Number of features: {len(feature_names)}")

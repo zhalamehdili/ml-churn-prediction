@@ -1,0 +1,25 @@
+[tool.black]
+line-length = 120
+target-version = ['py310']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  | venv
+  | env
+  | __pycache__
+  | .git
+  | notebooks
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 120
+skip = ["venv", "env", "__pycache__", ".git", "notebooks"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --cov=src --cov-report=term-missing"

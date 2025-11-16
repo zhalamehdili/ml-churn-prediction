@@ -1,15 +1,17 @@
-import pandas as pd
-import numpy as np
-from datetime import datetime
-import uuid
 import logging
+import uuid
+from datetime import datetime
+
+import numpy as np
+import pandas as pd
 from sqlalchemy.orm import Session
 
+from .database import PredictionLog
 from .model_loader import ModelLoader
 from .schemas import CustomerInput, PredictionOutput
-from .database import PredictionLog
 
 logger = logging.getLogger(__name__)
+
 
 class ChurnPredictor:
     """Handles churn prediction logic"""

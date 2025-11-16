@@ -1,6 +1,8 @@
-from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import Literal
+
+from pydantic import BaseModel, Field
+
 
 class CustomerInput(BaseModel):
     # request body I’ll send to /predict
@@ -26,6 +28,7 @@ class CustomerInput(BaseModel):
     MonthlyCharges: float = Field(..., ge=0, description="Monthly charges")
     TotalCharges: float = Field(..., ge=0, description="Total charges")
 
+
 class PredictionOutput(BaseModel):
     # response body I’ll return from /predict
     customer_id: str = Field(..., description="Unique identifier")
@@ -33,6 +36,7 @@ class PredictionOutput(BaseModel):
     churn_probability: float = Field(..., ge=0, le=1, description="Probability 0-1")
     risk_level: Literal["Low", "Medium", "High"] = Field(..., description="Risk bucket")
     timestamp: datetime = Field(..., description="Prediction time")
+
 
 class HealthResponse(BaseModel):
     status: str

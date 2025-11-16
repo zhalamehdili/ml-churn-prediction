@@ -1,9 +1,11 @@
-import joblib
 import logging
 from pathlib import Path
 
+import joblib
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 class ModelLoader:
     # holds my trained artifacts in memory (singleton-ish)
@@ -24,10 +26,17 @@ class ModelLoader:
         self._label_encoders = joblib.load(base_path / "label_encoders.pkl")
 
     @property
-    def model(self): return self._model
+    def model(self):
+        return self._model
+
     @property
-    def scaler(self): return self._scaler
+    def scaler(self):
+        return self._scaler
+
     @property
-    def feature_names(self): return self._feature_names
+    def feature_names(self):
+        return self._feature_names
+
     @property
-    def label_encoders(self): return self._label_encoders
+    def label_encoders(self):
+        return self._label_encoders

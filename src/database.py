@@ -1,10 +1,10 @@
 # src/database.py
-from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, Text, Boolean
-from sqlalchemy.sql import func
-from sqlalchemy.orm import declarative_base, sessionmaker
-from datetime import datetime
 import os
+
 from dotenv import load_dotenv
+from sqlalchemy import Column, DateTime, Float, Integer, String, Text, create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.sql import func
 
 # load variables from .env (at project root)
 load_dotenv()
@@ -19,6 +19,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, futu
 
 # base model
 Base = declarative_base()
+
 
 class PredictionLog(Base):
     __tablename__ = "prediction_logs"
@@ -56,6 +57,7 @@ class PredictionLog(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     model_version = Column(String(20), default="1.0")
 
+
 class ModelMetrics(Base):
     __tablename__ = "model_metrics"
 
@@ -70,9 +72,11 @@ class ModelMetrics(Base):
     dataset_size = Column(Integer)
     notes = Column(Text, nullable=True)
 
+
 def create_tables():
     """Create all DB tables."""
     Base.metadata.create_all(bind=engine)
+
 
 def get_db():
     """Yield a DB session for FastAPI dependency."""

@@ -5,3 +5,7 @@ __pycache__/
 .env
 *.pkl
 .DS_Store
+
+# allow model artifacts
+!models/
+!models/*.pkl

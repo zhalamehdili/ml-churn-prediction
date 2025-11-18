@@ -1,14 +1,11 @@
 #!/bin/bash
 
-echo "starting churn prediction API container"
+set -e
 
-echo "waiting for database to be ready"
-python scripts/init_db_docker.py
+echo "Starting Churn Prediction API..."
 
-if [ $? -eq 0 ]; then
-    echo "database is ready, starting API server"
-    python -m uvicorn src.api:app --host 0.0.0.0 --port 8000
-else
-    echo "database initialization failed, container will exit"
-    exit 1
-fi
+echo "Waiting for database and initializing tables..."
+python src/init_db.py
+
+echo "Database ready, starting API..."
+uvicorn src.api:app --host 0.0.0.0 --port ${PORT:-8000}

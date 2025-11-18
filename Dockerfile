@@ -25,9 +25,9 @@ RUN mkdir -p models logs
 # expose application port
 EXPOSE 8000
 
-# health check to verify the API is responding
+# health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD python -c "import requests; requests.get('http://localhost:8000/health')"
 
-# start the FastAPI server
-CMD ["bash", "scripts/start.sh"]
+# run with dynamic PORT from Railway
+CMD uvicorn src.api:app --host 0.0.0.0 --port ${PORT:-8000}

@@ -9,7 +9,7 @@ It is based on the Telco Customer Churn dataset and extends a training notebook 
 
 ## 1. Overview
 
-The goal is to identify customers who are likely to stop using the service (churn) by analyzing demographic, usage, and contract data.
+The goal is to identify customers who are likely to stop using the service (churn) by analyzing demographic, usage and contract data.
 The project started as a Jupyter model training task and evolved into an end-to-end system including API engineering, database integration, analytics and Docker deployment.
 
 ## 2. What was implemented

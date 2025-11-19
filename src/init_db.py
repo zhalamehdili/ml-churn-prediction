@@ -14,7 +14,7 @@ def init_database():
         if not existing:
             metrics = ModelMetrics(
                 model_version="1.0",
-                accuracy=0.852,  # replace with YOUR real numbers if different
+                accuracy=0.852,  # replace with real numbers if different
                 precision=0.830,
                 recall=0.810,
                 f1_score=0.820,

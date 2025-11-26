@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
-from .database import ModelMetrics, create_tables, PredictionLog, get_db
+from .database import ModelMetrics, PredictionLog, get_db
 from .predictor import ChurnPredictor
 from .schemas import CustomerInput, HealthResponse, PredictionOutput
 
@@ -23,7 +23,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # narrow in production
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -55,7 +55,7 @@ def health_check(db: Session = Depends(get_db)):
         db.execute(text("SELECT 1"))
         db_ok = True
     except Exception as e:
-        logger.error(f"DB health check failed: {e}")
+        logger.error(f"db health check failed: {e}")
         db_ok = False
 
     return HealthResponse(
@@ -70,8 +70,8 @@ def predict_churn(customer: CustomerInput, db: Session = Depends(get_db)):
     try:
         return predictor.predict(customer, db=db)
     except Exception as e:
-        logger.exception("Prediction failed")
-        raise HTTPException(status_code=500, detail=f"Prediction failed: {e}")
+        logger.exception("prediction failed")
+        raise HTTPException(status_code=500, detail=f"prediction failed: {e}")
 
 
 @app.get("/stats", tags=["Analytics"])
@@ -146,28 +146,3 @@ def model_info(db: Session = Depends(get_db)):
             else None
         ),
     }
-
-
-@app.post("/admin/init-db", tags=["Admin"])
-def initialize_database(db: Session = Depends(get_db)):
-    """initialize database tables and default model metrics (temporary endpoint)"""
-    # create all tables if they don't exist yet
-    create_tables()
-
-    # add initial model metrics only if they are missing
-    existing = db.query(ModelMetrics).filter_by(model_version="1.0").first()
-    if not existing:
-        initial_metrics = ModelMetrics(
-            model_version="1.0",
-            accuracy=0.852,
-            precision=0.830,
-            recall=0.810,
-            f1_score=0.820,
-            trained_at=datetime.utcnow(),
-            dataset_size=7043,
-            notes="Random Forest model - Railway deployment",
-        )
-        db.add(initial_metrics)
-        db.commit()
-
-    return {"status": "ok", "message": "database initialized"}

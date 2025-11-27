@@ -1,104 +1,154 @@
-# Customer Churn Prediction (ML Pipeline + FastAPI + PostgreSQL + Docker)
+# Customer Churn Prediction (Machine Learning Pipeline + FastAPI + PostgreSQL + Docker + Railway)
 
 ![Tests](https://github.com/zhalamehdili/ml-churn-prediction/workflows/Run%20Tests/badge.svg)
 ![Docker Build](https://github.com/zhalamehdili/ml-churn-prediction/workflows/Build%20and%20Push%20Docker%20Image/badge.svg)
 ![Code Quality](https://github.com/zhalamehdili/ml-churn-prediction/workflows/Code%20Quality/badge.svg)
 
-This project predicts customer churn using a complete machine learning pipeline and a backend built with FastAPI.
-It is based on the Telco Customer Churn dataset and extends a training notebook into a fully working backend API with a connected PostgreSQL database and Dockerized deployment.
+Live API: https://ml-churn-prediction-production-1ab7.up.railway.app  
+API Docs: https://ml-churn-prediction-production-1ab7.up.railway.app/docs
+
+This project predicts customer churn using a complete machine learning workflow and a fully deployed backend service. It started as a simple model training notebook and gradually turned into a full backend system with FastAPI, PostgreSQL logging, Docker and cloud deployment on Railway. The API can serve predictions in real time, store them in a database, provide summary statistics and expose model information.
 
 ## 1. Overview
 
-The goal is to identify customers who are likely to stop using the service (churn) by analyzing demographic, usage and contract data.
-The project started as a Jupyter model training task and evolved into an end-to-end system including API engineering, database integration, analytics and Docker deployment.
+The main idea behind this project is to identify customers who are likely to churn based on demographic features, service usage patterns and contract details. I trained and compared multiple models, built an API around the best-performing one and deployed everything in a way that behaves like a small production system. The project was also a way to practice good engineering habits: clean structure, testing, version control, reproducibility and infrastructure setup.
 
-## 2. What was implemented
+## 2. Features Implemented
 
-- Explored and cleaned the Telco dataset (EDA)
-- Trained and compared Logistic Regression and Random Forest models
-- Evaluated models using accuracy, precision, recall and F1
-- Saved the trained model and preprocessing pipeline
-- Built a FastAPI application to serve predictions in real time
-- Integrated PostgreSQL for storing predictions and metadata
-- Added endpoints for health checks, statistics and prediction history
-- Implemented automated API tests using pytest
-- Containerized the entire application using Docker and docker-compose
-- Created helper scripts for Docker start, stop, rebuild, and logs
+- Dataset exploration, cleaning and feature engineering  
+- ML model training (Logistic Regression and Random Forest)  
+- Detailed evaluation metrics and model comparison  
+- Saving preprocessing and model pipelines for inference  
+- FastAPI application for real-time predictions  
+- PostgreSQL integration to store predictions, probabilities and model metrics  
+- Analytics endpoints for churn statistics and history  
+- Model metadata endpoint  
+- Automated tests with pytest  
+- Docker image for API + PostgreSQL with docker-compose  
+- Railway deployment using Dockerfile + GitHub auto-deploy  
+- Full documentation of the deployment process  
 
-## 3. Results
+## 3. Model Results
 
-| Model | Accuracy | F1 |
-| ------ | -------- | ------ |
+| Model | Accuracy | F1 Score |
+|------|----------|----------|
 | Logistic Regression | 0.799 | 0.592 |
 | Random Forest | 0.852 | 0.820 |
 
-The Random Forest model is used in the API.
-All predictions (with probability and risk level) are stored in PostgreSQL.
+The Random Forest model is used by the API because it consistently performed better across precision, recall and F1.
 
 ## 4. Tech Stack
 
-- Python (pandas, numpy, scikit-learn)
-- FastAPI + Uvicorn
-- PostgreSQL with SQLAlchemy ORM
-- Pydantic for request/response models
-- pytest for testing
-- Docker & docker-compose for deployment
+### Machine Learning
+- pandas  
+- numpy  
+- scikit-learn  
+- joblib (model saving/loading)
+
+### Backend
+- FastAPI  
+- Uvicorn  
+- Pydantic (schemas)  
+- SQLAlchemy ORM  
+- Python typing  
+
+### Database
+- PostgreSQL  
+- SQLAlchemy Core + ORM  
+- Railway managed PostgreSQL instance
+
+### Infrastructure & Deployment
+- Docker  
+- docker-compose  
+- Railway (Docker runtime + PostgreSQL hosting)  
+- bash scripts  
+- environment variable management
+
+### Testing & CI/CD
+- pytest  
+- GitHub Actions (tests, formatting, Docker image build)  
+- Black, isort, Flake8 for code quality
 
 ## 5. Project Structure
 
-ml-churn-prediction/
-├── data/             # Dataset (churn.csv)
-├── models/           # Saved ML models and preprocessing files
-├── notebooks/        # Training and EDA notebooks
-├── src/              # FastAPI code (API, DB, predictor, loader)
-├── scripts/          # Docker helper scripts
-├── tests/            # API tests
-├── Dockerfile
-├── docker-compose.yml
-└── requirements.txt
+ml-churn-prediction/  
+├── data/  
+├── models/  
+├── notebooks/  
+├── src/  
+├── scripts/  
+├── tests/  
+├── Dockerfile  
+├── docker-compose.yml  
+├── RAILWAY_DEPLOYMENT.md  
+└── requirements.txt  
 
 ## 6. API Endpoints
 
-- POST /predict — Run a churn prediction and save result in DB
-- GET /health — Check API and DB status
-- GET /stats — Get churn rate and prediction analytics
-- GET /history — List recent predictions
-- GET /model-info — View model version and stored metrics
+POST /predict — run a churn prediction and log it in the database  
+GET /health — check API and database status  
+GET /stats — churn rate overview and aggregated statistics  
+GET /history — recent prediction logs  
+GET /model-info — model version, features and stored metrics  
 
 Swagger UI:
-http://localhost:8000/docs
 
-## 7. Docker Usage 
+Local: http://localhost:8000/docs  
+Railway: https://ml-churn-prediction-production-1ab7.up.railway.app/docs  
 
-Start all services:
+## 7. Docker Usage (Local)
+
+Start all services:  
 docker-compose up
 
-Run in background:
+Run in background:  
 docker-compose up -d
 
-Stop containers:
+Stop services:  
 docker-compose down
 
-Rebuild after code changes:
+Rebuild after updates:  
 docker-compose up --build
 
-Follow API logs:
+View API logs:  
 docker-compose logs -f api
 
-Access PostgreSQL:
+Access PostgreSQL:  
 docker exec -it churn-postgres psql -U churnuser -d churn_db
 
-All predictions persist across restarts using Docker volumes.
+All data remains persistent via Docker volumes.
 
-## CI/CD Pipeline
+## 8. Railway Deployment
 
-This project uses GitHub Actions for automated testing, code quality checks, and Docker image builds.
+The application is deployed on Railway using a Dockerfile, GitHub auto-deploy, and a managed PostgreSQL database.
 
-- On each push and pull request:
-  - Tests run with pytest
-  - Code style is checked with Black, isort, and Flake8
-- On pushes to `main`:
-  - A Docker image is built and pushed to Docker Hub:
-    - `zhalamehdili/ml-churn-prediction`
+Base URL: https://ml-churn-prediction-production-1ab7.up.railway.app  
+API Docs: https://ml-churn-prediction-production-1ab7.up.railway.app/docs  
 
-For more details, see `CI_CD.md`.
+Railway redeploys automatically whenever new code is pushed to the `main` branch.
+
+A full deployment guide is available in `RAILWAY_DEPLOYMENT.md`.
+
+## 9. CI/CD Pipeline
+
+GitHub Actions handle:
+
+- Running pytest  
+- Code formatting checks  
+- Building and pushing the Docker image to Docker Hub  
+  (repository: zhalamehdili/ml-churn-prediction)  
+
+CI/CD ensures the project stays consistent, working and reproducible.
+
+## 10. Project Status
+
+I included this section mainly to track progress while building the project, but it’s optional.  
+It can stay if you want recruiters to see the step-by-step development timeline.
+
+- Data exploration and model training: complete  
+- FastAPI backend: complete  
+- Database integration: complete  
+- Docker setup: complete  
+- CI/CD pipeline: complete  
+- Railway deployment: complete  
+- Documentation and demo: in progress  

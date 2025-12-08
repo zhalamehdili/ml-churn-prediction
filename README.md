@@ -43,31 +43,30 @@ The Random Forest model is used by the API because it consistently performed bet
 - pandas  
 - numpy  
 - scikit-learn  
-- joblib (model saving/loading)
+- joblib
 
 ### Backend
 - FastAPI  
 - Uvicorn  
-- Pydantic (schemas)  
+- Pydantic  
 - SQLAlchemy ORM  
-- Python typing  
 
 ### Database
 - PostgreSQL  
-- SQLAlchemy Core + ORM  
-- Railway managed PostgreSQL instance
+- SQLAlchemy Core and ORM  
+- Railway managed PostgreSQL
 
 ### Infrastructure & Deployment
 - Docker  
 - docker-compose  
-- Railway (Docker runtime + PostgreSQL hosting)  
+- Railway (Docker runtime and PostgreSQL hosting)  
 - bash scripts  
-- environment variable management
+- environment variables
 
 ### Testing & CI/CD
 - pytest  
-- GitHub Actions (tests, formatting, Docker image build)  
-- Black, isort, Flake8 for code quality
+- GitHub Actions  
+- Black, isort, Flake8
 
 ## 5. Project Structure
 
@@ -83,20 +82,26 @@ ml-churn-prediction/
 ├── RAILWAY_DEPLOYMENT.md  
 └── requirements.txt  
 
-## 6. API Endpoints
+## 6. Architecture Diagram
+
+This diagram explains how code moves from GitHub to Railway and how users interact with the deployed API.
+
+![Architecture Diagram](screenshots/architecture-diagram.png)
+
+## 7. API Endpoints
 
 POST /predict — run a churn prediction and log it in the database  
 GET /health — check API and database status  
-GET /stats — churn rate overview and aggregated statistics  
+GET /stats — aggregated churn statistics  
 GET /history — recent prediction logs  
-GET /model-info — model version, features and stored metrics  
+GET /model-info — model metadata  
 
 Swagger UI:
 
 Local: http://localhost:8000/docs  
 Railway: https://ml-churn-prediction-production-1ab7.up.railway.app/docs  
 
-## 7. Docker Usage (Local)
+## 8. Docker Usage (Local)
 
 Start all services:  
 docker-compose up
@@ -116,20 +121,18 @@ docker-compose logs -f api
 Access PostgreSQL:  
 docker exec -it churn-postgres psql -U churnuser -d churn_db
 
-All data remains persistent via Docker volumes.
+## 9. Railway Deployment
 
-## 8. Railway Deployment
-
-The application is deployed on Railway using a Dockerfile, GitHub auto-deploy, and a managed PostgreSQL database.
+The application is deployed on Railway using a Dockerfile, GitHub auto-deploy and a managed PostgreSQL database.
 
 Base URL: https://ml-churn-prediction-production-1ab7.up.railway.app  
 API Docs: https://ml-churn-prediction-production-1ab7.up.railway.app/docs  
 
-Railway redeploys automatically whenever new code is pushed to the `main` branch.
+Railway redeploys automatically when code is pushed to the main branch.
 
-A full deployment guide is available in `RAILWAY_DEPLOYMENT.md`.
+Full deployment steps can be found in `RAILWAY_DEPLOYMENT.md`.
 
-## 9. CI/CD Pipeline
+## 10. CI/CD Pipeline
 
 GitHub Actions handle:
 
@@ -138,12 +141,19 @@ GitHub Actions handle:
 - Building and pushing the Docker image to Docker Hub  
   (repository: zhalamehdili/ml-churn-prediction)  
 
-CI/CD ensures the project stays consistent, working and reproducible.
+This ensures the project stays consistent, working and reproducible.
 
-## 10. Project Status
+## 11. Screenshots
 
-I included this section mainly to track progress while building the project, but it’s optional.  
-It can stay if you want recruiters to see the step-by-step development timeline.
+- Swagger UI (`screenshots/01-swagger-ui.png`)  
+- Health check (`screenshots/02-health-check.png`)  
+- Prediction examples (`screenshots/03-prediction-example-1.png`, `03-prediction-example-2.png`)  
+- Stats (`screenshots/04-stats-analytics.png`)  
+- Prediction history (`screenshots/05-prediction-history.png`)  
+- GitHub Actions (`screenshots/06-github-actions.png`)  
+- Railway dashboard (`screenshots/07-railway-dashboard.png`)  
+
+## 12. Project Status
 
 - Data exploration and model training: complete  
 - FastAPI backend: complete  
@@ -151,4 +161,4 @@ It can stay if you want recruiters to see the step-by-step development timeline.
 - Docker setup: complete  
 - CI/CD pipeline: complete  
 - Railway deployment: complete  
-- Documentation and demo: in progress  
+- Documentation: complete

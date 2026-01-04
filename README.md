@@ -7,6 +7,8 @@
 Live API: https://ml-churn-prediction-production-1ab7.up.railway.app  
 API Docs: https://ml-churn-prediction-production-1ab7.up.railway.app/docs
 
+Demo video: https://drive.google.com/file/d/1r0Ynb1PPGIL4NVk5ZbLeuHR73c_7BS3X/view?usp=share_link
+
 Note: The application was deployed and running on Railway during development. The Railway free tier has since expired, so the live instance is no longer active. All core functionality, deployment steps and results are documented through screenshots, logs and diagrams included in this repository.
 
 This project predicts customer churn using a complete machine learning workflow and a fully deployed backend service. It started as a simple model training notebook and gradually turned into a full backend system with FastAPI, PostgreSQL logging, Docker and cloud deployment on Railway. The API can serve predictions in real time, store them in a database, provide summary statistics and expose model information.
